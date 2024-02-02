@@ -5,15 +5,15 @@ from simple_term_menu import TerminalMenu
 
 def scp_blackbox(user_info, LOCAL_PATH, SSH_PASSWORD, BLACKBOX_PATH, MACHINE):
     ip = user_info['ip']
-    print(f"Copying blackbox.csv from {user_info['username']}, {user_info['ip']}...")
-    if MACHINE == "Pi":
-        username = user_info['username'] + '.csv'
+    username = user_info['username']
+    print(f"Copying blackbox.csv from {username}, {user_info['ip']}...")
+    if MACHINE == "Pi": # Pi
+        csv_name = username + '.csv'
         cmd = ["sshpass","-p",SSH_PASSWORD,"scp","-O","-o",
                "StrictHostKeyChecking=no",
                f"pi@{ip}:{BLACKBOX_PATH}",
-               f'{os.path.join(LOCAL_PATH,username)}']
-    elif MACHINE == "Coral": # coral
-        username = user_info['username'] 
+               f'{os.path.join(LOCAL_PATH,csv_name)}']
+    elif MACHINE == "Coral": # Coral
         log_path = os.path.join(LOCAL_PATH,username)
         if not os.path.exists(log_path):
             os.makedirs(log_path)
@@ -21,13 +21,14 @@ def scp_blackbox(user_info, LOCAL_PATH, SSH_PASSWORD, BLACKBOX_PATH, MACHINE):
                "StrictHostKeyChecking=no",
                f"mendel@{ip}:{BLACKBOX_PATH}",
                f'{log_path}']
-    else:
-        username = user_info['username'] 
+    else: # for testing purposes
         log_path = os.path.join(LOCAL_PATH,username)
+        if not os.path.exists(log_path):
+            os.makedirs(log_path)
         cmd = ["sshpass","-p",SSH_PASSWORD,"scp","-r","-O","-o",
                "StrictHostKeyChecking=no",
                f"davis@{ip}:{BLACKBOX_PATH}",
-               f'{os.path.join(LOCAL_PATH,username)}']
+               f'{log_path}']
     try:
         print(f'Running:{cmd}')
         subprocess.run(args=cmd, check=True)
