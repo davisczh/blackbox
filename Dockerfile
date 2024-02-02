@@ -3,7 +3,7 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y sshpass openssh-client && \
     rm -rf /var/lib/apt/lists/* 
-RUN pip install PyYaml
-
+RUN pip install PyYaml \
+    simple-term-menu 
 COPY src /app
 CMD ["python" , "Script.py"]
