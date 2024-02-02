@@ -1,0 +1,11 @@
+---
+SSH_PASSWORD: ""
+SSH_USERNAMES:
+  - username: "davis"
+    ip: "192.168.0.139"
+  # - username: "user2"
+  #   ip: "192.168.1.2"
+  # - username: "user3"
+  #   ip: "192.168.1.3"
+BLACKBOX_PATH: "~/blackboxV10RM1/blackbox_M2.csv"
+LOCAL_PATH: "./blackboxes"
