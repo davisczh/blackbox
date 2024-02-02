@@ -30,13 +30,11 @@ def scp_blackbox(user_info, LOCAL_PATH, SSH_PASSWORD, BLACKBOX_PATH, MACHINE):
                f"davis@{ip}:{BLACKBOX_PATH}",
                f'{log_path}']
     try:
-        print(f'Running:{cmd}')
+        print(f'Running:{cmd}') # for testing purposes
         subprocess.run(args=cmd, check=True)
         print(f"Blackbox.csv copied from {user_info['username']} successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Failed to copy from {user_info['username']}: {e}")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
     return
 
 def main():
@@ -83,26 +81,22 @@ def update_config():
         with open('./configs.yaml', 'r') as file:
             config = yaml.safe_load(file)
             print("current config: ", config)
-    except FileNotFoundError:
-        print(os.listdir('./src'))
+    except FileNotFoundError: 
         print("No config file found. Creating a new one.")
         config = {}
-
     ssh_usernames = config.get('SSH_USERNAMES', [])
-
     while True:
         print("\nEnter SSH user and IP details. Leave username empty to proceed.")
         username = get_user_input("Enter username: ")
         if username == "":
             break
         ip = get_user_input("Enter IP address: ")
-        
         ssh_usernames.append({'username': username, 'ip': ip})
 
     config['SSH_USERNAMES'] = ssh_usernames
     with open('./configs.yaml', 'w') as file:
         yaml.dump(config, file, sort_keys=False)
-    print("Updated config: ", config)
+    print("Updated config: ", config) # for testing purposes
     print("\nConfig updated and saved to config.yaml")
 
 if __name__ == '__main__':
